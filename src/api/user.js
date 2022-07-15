@@ -2,14 +2,19 @@ import request from '@/utils/request'
 
 /**
  *登录
- * @param {String} phonenumber 手机号
- * @param {String} password 验证码
+ * @param {String} mobile 手机号
+ * @param {String} code 验证码
  * @returns Promise对象
  */
-export const login = (phonenumber, password) => {
+export const login = (mobile, code) => {
   return request({
     url: '/v1_0/authorizations',
     method: 'POST',
-    data: { phonenumber, password }
+    data: { mobile, code }
+  })
+}
+export const sendCode = (mobile) => {
+  return request({
+    url: `/v1_0/sms/codes/${mobile}`
   })
 }
