@@ -9,7 +9,7 @@ export default new Vuex.Store({
   // 声明数据
   state: {
     // user:{}
-    // use: JSON.parse(localStorage.getItem('HEIMA_YOUTIAO_TOKEN')) || {}
+    // user: JSON.parse(localStorage.getItem('HEIMA_YOUTIAO_TOKEN')) || {}
     // user: storage.get('HEIMA_YOUTIAO_TOKEN')
     user: getToken() || {}
   },
