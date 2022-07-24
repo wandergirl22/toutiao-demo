@@ -1,17 +1,20 @@
 <template>
-  <div>
+  <div
+    class="article-item"
+    @click="$router.push(`article/${articleInfo.art_id}`)"
+  >
     <!-- 渲染无图片 -->
-    <van-cell
-      v-if="articleInfo.cover.type === 0"
-      :title="articleInfo.title"
-      :label="articleDesc"
-    />
-    <!-- 渲染一张图片 -->
-    <van-cell
-      v-if="articleInfo.cover.type === 1"
-      :title="articleInfo.title"
-      :label="articleDesc"
+    <!-- :label="articleDesc" -->
+    <van-cell v-if="articleInfo.cover.type === 0" :title="articleInfo.title">
+      <template #label>
+        {{ articleInfo.pubdate | relativeTime }}
+      </template></van-cell
     >
+    <!-- 渲染一张图片 -->
+    <van-cell v-if="articleInfo.cover.type === 1" :title="articleInfo.title"
+      ><template #label>
+        {{ articleInfo.pubdate | relativeTime }}
+      </template>
       <van-image width="3rem" height="2rem" :src="articleInfo.cover.images[0]">
       </van-image>
     </van-cell>
@@ -27,13 +30,14 @@
             :src="item"
           ></van-image>
         </div>
-        <span>{{ articleDesc }}</span>
+        <span>{{ articleInfo.aut_name }}</span>
+        <span>{{ articleInfo.comm_count }}评论</span>
+        <span>{{ articleInfo.pubdate | relativeTime }}</span>
       </template>
     </van-cell>
   </div>
 </template>
 <script>
-import dayjs from '@/utils/day'
 export default {
   name: 'ArticleItem',
   props: {
@@ -53,11 +57,11 @@ export default {
   beforeDestroy() {},
   filters: {},
   computed: {
-    articleDesc() {
-      const art = this.articleInfo
-      const relativeTime = dayjs(this.articleInfo.pubdate).fromNow()
-      return `${art.aut_name} ${art.title} ${relativeTime}`
-    }
+    // articleDesc() {
+    //   const art = this.articleInfo
+    //   const relativeTime = dayjs(this.articleInfo.pubdate).fromNow()
+    //   return `${art.aut_name} ${art.title} ${relativeTime}`
+    // }
   },
   watch: {}
 }

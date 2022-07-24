@@ -2,7 +2,9 @@
   <div>
     <van-nav-bar class="navbar">
       <template #title>
-        <van-button round> <van-icon name="search" @click="$router.push('/search')"/>搜索 </van-button>
+        <van-button round @click="$router.push('/search')">
+          <van-icon name="search" />搜索
+        </van-button>
       </template>
     </van-nav-bar>
     <van-tabs v-model="active" swipable>
@@ -56,6 +58,7 @@ export default {
       this.$refs.popup.isShow = true
     },
     async getMyChannels() {
+      console.log(this.isLogin)
       try {
         if (!this.isLogin) {
           // 如果是离线状态
@@ -73,6 +76,10 @@ export default {
         } else {
           // 如果是登录状态
           // 发送请求获取默认频道数据
+          const {
+            data: { data }
+          } = await getMyChannels()
+          this.myChannels = data.channels
         }
       } catch (error) {
         this.$toast.fail('请重新获取频道列表')

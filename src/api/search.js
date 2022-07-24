@@ -12,3 +12,18 @@ export const getSearchSuggestion = (q) => {
     }
   })
 }
+/**
+ * 获取搜索结果
+ * @param {Object} params 参数
+ * @returns Promise对象
+ */
+export const getSearchResult = (page, perPage, q) => {
+  return request({
+    url: '/v1_0/search',
+    params: {
+      page,
+      per_page: perPage,
+      q
+    }
+  })
+}

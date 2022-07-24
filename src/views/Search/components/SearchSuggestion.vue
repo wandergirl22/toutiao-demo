@@ -1,14 +1,19 @@
 <template>
   <div>
-    <van-cell
-      icon="search"
-      v-for="(item, index) in highlightSuggestions"
-      :key="index"
-    >
-      <template #title>
-        <span v-html="item"></span>
-      </template>
-    </van-cell>
+    <van-cell-group>
+      <van-cell
+        v-for="(item, index) in highlightData"
+        :key="index"
+        @click="clickFn(index)"
+      >
+        <template #icon>
+          <van-icon name="search" class="search-icon"></van-icon>
+        </template>
+        <template #title>
+          <span v-html="item"></span>
+        </template>
+      </van-cell>
+    </van-cell-group>
   </div>
 </template>
 
@@ -21,28 +26,14 @@ export default {
     }
   },
   props: {
-    keyword: {
+    keywords: {
       type: String,
       required: true
     }
   },
-  computed: {
-    highlightSuggestions() {
-      const reg = new RegExp(this.keyword, 'ig')
-      return this.suggestions.map((str) =>
-        str.replace(reg, (match) => `<span style="color: red">${match}</span>`)
-      )
-    }
-  },
   watch: {
-    // 如果监视属性绑定的函数，在methods里有声明
-    // 支持字符串的写法
     // keywords: 'getSearchSuggestion'
-    // keywords(){
-    //     this.getSearchSuggestion()
-    // }
-    // 先渲染结构后监听会导致第一次输入内容不会发送请求
-    keyword: {
+    keywords: {
       immediate: true,
       handler() {
         this.getSearchSuggestion()
@@ -52,18 +43,37 @@ export default {
   methods: {
     async getSearchSuggestion() {
       try {
-        const {
-          data: { data }
-        } = await getSearchSuggestion(this.keyword)
-        if (data.options.length === 0 || data.options == null) {
-          this.$toast.fail('没有此项搜索建议')
+        const res = await getSearchSuggestion(this.keywords)
+        //   console.log(res)
+        this.suggestions = res.data.data.options.filter(Boolean)
+        if (this.suggestions.length === 0) {
+          this.$toast.fail('没有搜索建议')
         }
-        this.suggestions = data.options
       } catch (error) {
         console.log(error)
       }
+    },
+    // 拿到原数组的值传过去
+    clickFn(index) {
+      const item = this.suggestions[index]
+      console.log(item)
+      this.$emit('clickFn', item)
+    }
+  },
+  computed: {
+    highlightData() {
+      // 将搜索建议的每一项处理
+      const reg = new RegExp(this.keywords, 'ig')
+      return this.suggestions.map((str) =>
+        str.replace(reg, (match) => `<span style='color:red'>${match}</span>`)
+      )
     }
   }
 }
 </script>
-<style lang="less" scoped></style>
+
+<style scoped lang="less">
+.search-icon {
+  padding-top: 10px;
+}
+</style>

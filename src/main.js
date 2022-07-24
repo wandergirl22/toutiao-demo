@@ -6,9 +6,12 @@ import '@/assets/font/iconfont.css'
 import Vant from 'vant'
 import 'vant/lib/index.css'
 import 'amfe-flexible'
+import './utils/dayjs'
+
 Vue.use(Vant)
 Vue.config.productionTip = false
 
+// Vue.filter('changeTime', (val) => dayjs(val).fromNow())
 new Vue({
   router,
   store,

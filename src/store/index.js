@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-// import storage from './storage'
+// import storage from '../utils/storage.js'
 import { getToken, setToken } from '@/utils'
 
 Vue.use(Vuex)
@@ -13,7 +13,6 @@ export default new Vuex.Store({
     // user: storage.get('HEIMA_YOUTIAO_TOKEN')
     user: getToken() || {}
   },
-  getters: {},
   // 修改数据
   mutations: {
     setUser(state, payload) {
@@ -23,6 +22,7 @@ export default new Vuex.Store({
       setToken(payload)
     }
   },
+
   actions: {},
   modules: {}
 })

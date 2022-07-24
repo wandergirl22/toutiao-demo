@@ -5,8 +5,11 @@ module.exports = {
     },
     // 该插件**不能转换行内样式中的px
     'postcss-pxtorem': {
-      rootValue: (module) => (/vant/gi.test(module.file) ? 37.5 : 75),
-      propList: ['*']
+      rootValue({ file }) {
+        return file.indexOf('vant') !== -1 ? 37.5 : 75
+      },
+      propList: ['*'],
+      exclude: 'github-markdown'
     }
   }
 }
